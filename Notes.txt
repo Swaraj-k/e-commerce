@@ -1,0 +1,199 @@
+Step 1:First Create a single folder
+Step 2:create two folder inside that 1. backend 2. frontend
+Step 3:In backend create app.js and server.js
+Step 4:Now npm init -main folder where both frontend and backend
+
+Step 5:entry point - backend/server.js
+Step 6:npm i mongoose dotenv express nodemon
+
+
+Step 7:create a folder of config in backend
+Step 8:create a file of name of config.env in config folder
+
+Step 9:In package.json
+
+"start": "node backend/server.js",
+"dev":"nodemon backend/server.js"
+
+/////////////////////////////////////Controllers /////////////////////////////////////////////////////
+Step 10:Now create two folder controllers and routes in backend
+
+In controllers create controllers like productController.js
+exports.getAllProducts = (req,res)=>{
+    res.status(200).json({message:"Route is working fine"})
+}  This is for controllers
+
+__________________________________________________________________________________________________
+Step 11:In Routes create routes like productRoute.js
+
+Now Import the route in app.js
+__________________________________________________________________________________________________
+Step 12:Now Create mongodb Data Base in config (for convenience)
+
+Step 13:create database.js
+
+
+
+Step 14:Check the Routes using thunderclient or like other Postman and use the request from the app.js link
+
+Step 15:Import database in server.js
+and call database after config in server.js
+
+
+
+Create modals in backend
+-create productModals.js
+-- create product schema in productmodal.js 
+------like
+const mongoose = require("mongoose");
+const productSchema = new mongoose.Schema({
+    name: {
+        type:String,
+        required:[true,"Please Enter product Name"]
+    },
+    description:{
+        type:String,
+        required:[true,"Please Enter product Description"]
+    },
+    Price:{
+        type:String,
+        required:[true,"Please Enter the Product Price"],
+        maxLength:[8,"Price cannot exceed 8 Characters"]
+    },
+ });
+
+
+Create update product in productController.js
+create add new product in productController.js
+
+//////////////////////////////////////////   ERROR HANDLING   /////////////////////////////////////////////////////////////////////////////////
+
+Create a folder name utils in Backend 
+-create a file name errorhander.js
+ --class ErrorHander extends Error{  //ErrorHander is the default class name and its inheritence is Error
+    constructor(message, statusCode){
+        super(message);
+        this.statusCode = statusCode
+
+        Error.captureStackTrace(this,this.constructor) //Object oriented program - captureStackTrace is the funtion of Error
+    }
+}
+
+module.exports = ErrorHander;
+
+
+Create another file in for async and await handlers in middleware
+
+
+Create another function for the unhandled promise error for server or database link error in server.js at the very extends
+
+
+create another function for the uncaught error in server.js at the very top -for error handlling of undefined string like
+
+
+Create error handling for mongodb Error in Error.js 
+//Wrong Mongodb Id error
+    if(err.name === "CastError"){
+        const message = `Resource not found. Invalid : ${err.path}`
+        err = new ErrorHander(message, 400);
+    }
+
+
+
+
+
+//////////////////////////////////////////// Search Filter pagintion ////////////////////////////////////////////////////////////////////////////
+
+Create apifeatures.js in utils     --|||| query in the url means anything after ? for eg - "http://localhost:4000/api/v1/product?keyword=laptop
+ class ApiFeatures{
+    constructor(query, queryStr){
+        this.query = query;
+        this.queryStr =queryStr;
+    }
+ }
+
+ module.exports = ApiFeatures;
+
+create in apifeatures search, filter, pagination
+
+
+
+
+//////////////////////////////////////////////// Backend User & Password Authentication ///////////////////////////////////////////////////////
+
+npm i bcryptjs jsonwebtoken validator nodemailer cookie-parser body-parser
+
+-bcryptjs - for Password like credential for hashing
+-jsonwebtoken -
+-validator - for valid like mailing
+-nodemailer - forget password like otp and recent
+-cookie-parser - jsonwebtoken stored in cookie
+-body-parser - Parse incoming request bodies in a middleware before your handlers, available under the req.body property
+
+
+Create a User modal and user controllers
+
+Create a user router and import in app.js
+
+Create a Register user in useController.js and import in userroute
+
+//hashing of password in usermodal.js
+//Jwt Token in Usermodal.js
+
+
+
+
+
+
+
+
+
+-----------------------------------------------------_________________________________________---------------------------------------------------
+
+In app.js
+create express
+
+
+const express = require("express");
+const app = express();
+
+
+module.exports = app;
+
+
+
+Import Routes in app.js --
+app.use(express.json());
+
+app.use("/api/v1",product);
+
+--------------------------------------------
+In server.js
+
+Create listen server
+
+const app = require("./app");
+
+const dotenv = require("dotenv");
+//config
+dotenv.config({path:"backend/config/config.env"});
+
+app.listen(process.env.PORT,()=>{
+    console.log(`server is working on http://localhost:${process.env.PORT}`)
+})
+
+
+Give the path of config in this 
+------------------------------------------------
+In config.env
+
+create port variable
+
+like:- PORT = 4000
+
+
+
+-----------------------------------------------
+In database.js
+Connect database using mongoose and make DB_URI variable istead of using direct link in config.env file
+
